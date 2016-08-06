@@ -4,9 +4,22 @@ import akka.http.scaladsl.Http
 import akka.stream.ActorMaterializer
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
+import akka.http.scaladsl.server.Route
 import spray.json.DefaultJsonProtocol._
 
+import scala.concurrent.Future
+import scala.util.{Failure, Success}
+
 case class Person(name: String, age: Int)
+
+object Db {
+  def getPerson(name: String): Future[Option[Person]] = {
+    name match {
+      case "kot" => Future.successful(Some(Person(name, 41)))
+      case _ => Future.failed(new Exception(s"Person with name '$name' was not found."))
+    }
+  }
+}
 
 object WebServer {
   def main(args: Array[String]): Unit = {
@@ -20,8 +33,14 @@ object WebServer {
         path("hello") {
           complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, "<h1>Say hello</h1>"))
         } ~
-        path("person") {
-          complete(Person("kot", 41))
+        pathPrefix("person" / ".*".r) { name: String =>
+          val maybePerson = Db.getPerson(name)
+
+          onSuccess(maybePerson) {
+            case Some(person) => complete(person)
+            case None => complete(StatusCodes.NotFound)
+          }
+          //complete(Person("kot", 41))
         }
       }
 
