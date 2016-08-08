@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Run" type="SbtRunConfiguration" factoryName="SBT Task" singleton="true">
+    <setting name="tasks" value="~re-start" />
+    <setting name="vmparams" value="-Xms512M -Xmx1024M -Xss1M -XX:+CMSClassUnloadingEnabled -XX:MaxPermSize=256M" />
+    <setting name="workingDir" value="$PROJECT_DIR$" />
+    <envs />
+    <method />
+  </configuration>
+</component>
