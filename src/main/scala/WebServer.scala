@@ -1,22 +1,31 @@
+import java.util.UUID
+
 import akka.http.scaladsl.model._
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
+import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
 import akka.stream.ActorMaterializer
 import akka.http.scaladsl.server.Directives._
-import spray.json._
-import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
+import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
+import akka.http.scaladsl.server.Route
+import spray.json.{DefaultJsonProtocol, JsonFormat}
+import spray.json.DefaultJsonProtocol._
+
 import scala.concurrent.Future
+import scala.util.{Failure, Success}
 
 trait Message
 final case class Person(name: String, age: Int) extends Message
-final case class Envelope[A <: Message](payload: A, server: String)
+final case class Envelope[A <: Message](payload: A, server: String, appId: String)
 
 object Envelope {
-  def apply[A <: Message](payload: A): Envelope[A] = Envelope(payload, java.net.InetAddress.getLocalHost.toString)
+  private val id = UUID.randomUUID()
+  def apply[A <: Message](payload: A): Envelope[A] =
+    Envelope(payload, java.net.InetAddress.getLocalHost.toString, id.toString)
 }
 
 trait JsonSupport extends SprayJsonSupport with DefaultJsonProtocol {
-  implicit def envelopeFormat[A <: Message : JsonFormat] = jsonFormat2(Envelope.apply[A])
+  implicit def envelopeFormat[A <: Message : JsonFormat] = jsonFormat3(Envelope.apply[A])
   implicit val personFormat = jsonFormat2(Person)
 }
 
