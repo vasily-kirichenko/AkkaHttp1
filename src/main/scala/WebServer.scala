@@ -20,8 +20,9 @@ final case class Envelope[A <: Message](payload: A, server: String, appId: Strin
 
 object Envelope {
   private val id = UUID.randomUUID()
-  def apply[A <: Message](payload: A): Envelope[A] =
+  def apply[A <: Message](payload: A): Envelope[A] = {
     Envelope(payload, java.net.InetAddress.getLocalHost.toString, id.toString)
+  }
 }
 
 trait JsonSupport extends SprayJsonSupport with DefaultJsonProtocol {
@@ -58,7 +59,7 @@ object WebServer extends JsonSupport {
       }
 
     val port = 8091
-    val bindingFuture = Http().bindAndHandle(route, "0.0.0.0", port)
+    Http().bindAndHandle(route, "0.0.0.0", port)
     println(s"Server online at http://localhost:$port. Press Return to stop...")
   }
 }
