@@ -8,8 +8,11 @@ import akka.stream.ActorMaterializer
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
 import akka.http.scaladsl.server.Route
+import kamon.Kamon
 import spray.json.{DefaultJsonProtocol, JsonFormat}
+import kamon.influxdb._
 import scala.concurrent.Future
+import scala.util.Random
 
 trait Message
 final case class Person(name: String, age: Int) extends Message
@@ -34,11 +37,16 @@ object Db {
     }
   }
 }
+
 object WebServer extends JsonSupport {
   def main(args: Array[String]): Unit = {
     implicit val system = ActorSystem("web-server-system")
     implicit val materializer = ActorMaterializer()
     implicit val executionContext = system.dispatcher
+
+    Kamon.start()
+    val someHistogram = Kamon.metrics.histogram("some-histogram")
+    someHistogram.record(Random.nextInt.abs.toLong)
 
     val route =
       get {
@@ -55,7 +63,7 @@ object WebServer extends JsonSupport {
       }
 
     val port = 29001
-    Http().bindAndHandle(route, "0.0.0.0", port)
+    Http().bindAndHandle(route, "0.0.0.0", port).onComplete(_ => Kamon.shutdown())
     println(s"Server is online at http://localhost:$port")
   }
 }
