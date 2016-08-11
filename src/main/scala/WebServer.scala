@@ -9,10 +9,7 @@ import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
 import akka.http.scaladsl.server.Route
 import spray.json.{DefaultJsonProtocol, JsonFormat}
-import spray.json.DefaultJsonProtocol._
-
 import scala.concurrent.Future
-import scala.util.{Failure, Success}
 
 trait Message
 final case class Person(name: String, age: Int) extends Message
@@ -20,9 +17,8 @@ final case class Envelope[A <: Message](payload: A, server: String, appId: Strin
 
 object Envelope {
   private val id = UUID.randomUUID()
-  def apply[A <: Message](payload: A): Envelope[A] = {
+  def apply[A <: Message](payload: A): Envelope[A] =
     Envelope(payload, java.net.InetAddress.getLocalHost.toString, id.toString)
-  }
 }
 
 trait JsonSupport extends SprayJsonSupport with DefaultJsonProtocol {
@@ -58,8 +54,8 @@ object WebServer extends JsonSupport {
         }
       }
 
-    val port = 8091
+    val port = 29001
     Http().bindAndHandle(route, "0.0.0.0", port)
-    println(s"Server online at http://localhost:$port. Press Return to stop...")
+    println(s"Server is online at http://localhost:$port")
   }
 }

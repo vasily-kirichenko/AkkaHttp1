@@ -1,5 +1,5 @@
 name := "AkkaHttp1"
-version := "1.0"
+version := "1.3"
 scalaVersion := "2.11.8"
 enablePlugins(DockerPlugin)
 
@@ -18,6 +18,8 @@ scalacOptions ++= Seq(
   "-Xfatal-warnings")
 
 lazy val root = (project in file(".")).enablePlugins(JavaAppPackaging)
+
+dockerRepository := Some("10.70.16.194:5000")
 
 libraryDependencies += "io.spray" %%  "spray-json" % "1.3.2"
 
