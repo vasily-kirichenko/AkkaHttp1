@@ -1,3 +1,7 @@
+import com.typesafe.sbt.SbtAspectj._
+
+aspectjSettings
+
 name := "AkkaHttp1"
 version := "1.3"
 scalaVersion := "2.11.8"
@@ -21,6 +25,11 @@ lazy val root = (project in file(".")).enablePlugins(JavaAppPackaging)
 
 dockerRepository := Some("10.70.16.194:5000")
 
+resolvers += "Kamon repo" at "http://repo.kamon.io"
+
+libraryDependencies += "io.kamon" %%  "kamon-core" % "0.6.2"
+libraryDependencies += "io.kamon" %%  "kamon-akka" % "0.6.2"
+
 libraryDependencies += "io.spray" %%  "spray-json" % "1.3.2"
 
 val akkaV = "2.4.8"
@@ -34,3 +43,4 @@ libraryDependencies ++= Seq(
 )
 
 mainClass in Compile := Some("WebServer")
+javaOptions <++= AspectjKeys.weaverOptions in Aspectj
