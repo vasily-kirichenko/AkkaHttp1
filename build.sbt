@@ -1,10 +1,10 @@
 import com.typesafe.sbt.SbtAspectj._
 
 name := "AkkaHttp1"
-version := "1.8"
+version := "1.11"
 scalaVersion := "2.11.8"
 enablePlugins(DockerPlugin)
-//enablePlugins(AspectJWeaver)
+enablePlugins(AspectJWeaver)
 enablePlugins(AspectjRunner)
 
 scalacOptions ++= Seq(
