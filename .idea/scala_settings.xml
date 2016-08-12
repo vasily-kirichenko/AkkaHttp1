@@ -9,5 +9,6 @@
         <entry key="xml" value="XML" />
       </map>
     </option>
+    <option name="treatDocCommentAsBlockComment" value="true" />
   </component>
 </project>
