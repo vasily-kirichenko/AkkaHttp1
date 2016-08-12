@@ -7,7 +7,6 @@ import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
 import akka.stream.ActorMaterializer
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
-import akka.http.scaladsl.server.Route
 import kamon.Kamon
 import spray.json.{DefaultJsonProtocol, JsonFormat}
 import kamon.influxdb._
