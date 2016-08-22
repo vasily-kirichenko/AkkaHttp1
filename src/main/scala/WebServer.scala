@@ -39,11 +39,12 @@ object Db {
 
 object WebServer extends JsonSupport {
   def main(args: Array[String]): Unit = {
+    Kamon.start()
+
     implicit val system = ActorSystem("web-server-system")
     implicit val materializer = ActorMaterializer()
     implicit val executionContext = system.dispatcher
 
-    Kamon.start()
     val someHistogram = Kamon.metrics.histogram("some-histogram")
     someHistogram.record(Random.nextInt.abs.toLong)
 
