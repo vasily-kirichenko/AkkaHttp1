@@ -63,7 +63,7 @@ object WebServer extends JsonSupport {
       }
 
     val port = 29001
-    Http().bindAndHandle(route, "0.0.0.0", port).onComplete(_ => Kamon.shutdown())
+    Http().bindAndHandle(route, "0.0.0.0", port)
     println(s"Server is online at http://localhost:$port")
   }
 }
