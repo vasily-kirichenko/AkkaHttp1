@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="SBT: io.kamon:kamon-jdbc_2.11:0.6.2:jar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.ivy2/cache/io.kamon/kamon-jdbc_2.11/jars/kamon-jdbc_2.11-0.6.2.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.ivy2/cache/io.kamon/kamon-jdbc_2.11/docs/kamon-jdbc_2.11-0.6.2-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.ivy2/cache/io.kamon/kamon-jdbc_2.11/srcs/kamon-jdbc_2.11-0.6.2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
